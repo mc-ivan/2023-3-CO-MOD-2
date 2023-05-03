@@ -36,3 +36,6 @@ class ObstacleManager:
             obstacle = Bird()
 
         return obstacle
+
+    def reset_obstacles(self):
+        self.obstacles = []
