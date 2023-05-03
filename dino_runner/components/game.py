@@ -20,9 +20,11 @@ class Game:
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
-        self.menu = Menu(self.screen, "Press any key to start...")
+        self.menu = Menu(self.screen)
         self.running = False
         self.score = Counter()
+        self.death_count = Counter()
+        self.highest_score = Counter()
 
     def execute(self):
         self.running = True
@@ -78,7 +80,15 @@ class Game:
         half_screen_width = SCREEN_WIDTH // 2
         half_screen_height = SCREEN_HEIGHT // 2
         self.screen.blit(ICON, (half_screen_width - 50, half_screen_height - 140))
-        self.menu.draw(self.screen)
+        if self.death_count == 0:
+            self.menu.draw(self.screen, "Press any key to start...")
+        else:
+            self.update_higest_score()
+            self.menu.draw(self.screen, "-GAME OVER-")
+            self.menu.draw(self.screen, f"Score: {self.score.count}", half_screen_width, 350)
+            self.menu.draw(self.screen, f"Deaths: {self.death_count.count}", half_screen_width, 400)
+            self.menu.draw(self.screen, f"Higest Score: {self.highest_score.count}", half_screen_width, 500)
+
         self.menu.update(self)
 
     def update_score(self):
@@ -86,6 +96,10 @@ class Game:
         if self.score.count % 100 == 0 and self.game_speed < 500:
             self.game_speed += 5
         # print(f"Score: {self.score} Speed: {self.game_speed}")
+
+    def update_higest_score(self):
+        if self.score.count > self.highest_score.count:
+            self.highest_score.set_count(self.score.count)
 
     def reset_game(self):
         self.obstacle_manager.reset_obstacles()

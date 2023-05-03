@@ -20,6 +20,7 @@ class ObstacleManager:
             # print(game.player.dino_rect.colliderect(obstacle.rect))
             if game.player.dino_rect.colliderect(obstacle.rect):
                 game.playing = False
+                game.death_count.update()
                 break
 
 
